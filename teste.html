@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Academia ou Explosão</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #f4f4f9;
+      text-align: center;
+      padding: 20px;
+      transition: all 1s ease;
+    }
+    h1 {
+      color: #333;
+    }
+    button {
+      background-color: #007bff;
+      color: white;
+      border: none;
+      padding: 10px 20px;
+      font-size: 16px;
+      cursor: pointer;
+      margin: 10px;
+      border-radius: 5px;
+    }
+    button:hover {
+      background-color: #0056b3;
+    }
+    #timer {
+      font-size: 24px;
+      color: red;
+      margin-top: 20px;
+    }
+    #message {
+      font-size: 18px;
+      margin-top: 20px;
+      color: #444;
+    }
+    #explosion-mode {
+      display: none;
+      background-color: black;
+      color: red;
+      height: 100vh;
+      width: 100vw;
+      position: fixed;
+      top: 0;
+      left: 0;
+      text-align: center;
+      padding-top: 10%;
+      font-family: 'Courier New', monospace;
+    }
+    #explosion-mode img {
+      max-width: 300px;
+      margin-top: 20px;
+    }
+  </style>
+</head>
+<body>
+  <h1>Você foi à academia hoje?</h1>
+  <button onclick="respostaSim()">Sim</button>
+  <button onclick="respostaNao()">Não</button>
+
+  <div id="message"></div>
+  <div id="timer"></div>
+
+  <!-- Modo explosão -->
+  <div id="explosion-mode">
+    <h1>Gabriel, o jogo começou!</h1>
+    <p>Você tem 60 Segunfos para completar o treino (Pular 60 vezes), ou seu PC gamer vai para o espaço!</p>
+    <div id="timer-explosion"></div>
+    <img src="teste2.png" alt="Placeholder de imagem" id="placeholder">
+  </div>
+
+  <!-- Placeholder para áudio -->
+  <audio id="audio" src="teste1.mp3"></audio>
+
+  <script>
+    function respostaSim() {
+      document.getElementById("message").innerText = "Parabéns! Continue firme no seu objetivo!";
+      document.getElementById("timer").innerText = "";
+    }
+
+    function respostaNao() {
+      const body = document.body;
+      const explosionMode = document.getElementById("explosion-mode");
+      const timerExplosion = document.getElementById("timer-explosion");
+      const audio = document.getElementById("audio");
+
+      // Mudar estilo da página para o modo explosão
+      body.style.backgroundColor = "black";
+      body.style.color = "red";
+      document.querySelector("h1").style.display = "none";
+      explosionMode.style.display = "block";
+
+      // Tocar música
+      audio.play();
+
+      let timeLeft = 60; // 60 segundos
+
+      function updateTimer() {
+        const minutes = Math.floor(timeLeft / 60);
+        const seconds = timeLeft % 60;
+        timerExplosion.innerText = `Tempo restante: ${minutes}:${seconds < 10 ? '0' : ''}${seconds}`;
+        if (timeLeft > 0) {
+          timeLeft--;
+        } else {
+          timerExplosion.innerText = "BOOM! PC gamer perdido. Tente novamente amanhã!";
+          clearInterval(timerInterval);
+        }
+      }
+
+      const timerInterval = setInterval(updateTimer, 1000);
+      updateTimer();
+
+    }
+  </script>
+</body>
+</html>
